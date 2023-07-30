@@ -1,9 +1,11 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+/* eslint-disable import/no-extraneous-dependencies */
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path')
 
 module.exports = {
   entry: './index.js',
   mode: 'development',
+  devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: './dist/bundle.js',
@@ -24,7 +26,7 @@ module.exports = {
   devServer: {
     port: 3000,
     static: {
-      directory: path.join(__dirname, 'public')
+      directory: path.join(__dirname, 'public'),
     },
     open: true,
     hot: true,
@@ -32,7 +34,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'public', 'index.html')
-    })
-  ]
-};
+      template: path.join(__dirname, 'public', 'index.html'),
+    }),
+  ],
+}

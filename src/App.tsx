@@ -1,7 +1,12 @@
-import React from 'react';
+import React from 'react'
+import { Provider } from 'react-redux'
 
-const App = () => {
-  return <h1>Hola, mundo!</h1>;
-};
+import store from '@/store'
 
-export default App;
+const App = () => (
+  <Provider store={store}>
+    <h1>Hola, mundo!</h1>
+  </Provider>
+)
+
+export default App
