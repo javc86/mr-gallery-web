@@ -40,7 +40,7 @@ const Home = () => {
           </div>
         </div>
       </header>
-      <div className="grid grid-cols-3 gap-3 mt-5 mx-10 lg:mx-20 xl:mx-40">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 mt-5 mx-10 lg:mx-20 xl:mx-40">
         {photos.map((photo) => (
           <CardRippleEffect
             key={photo.id}
