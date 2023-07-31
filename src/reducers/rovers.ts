@@ -1,10 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit'
 
 import { getRovers } from '@/actions/rovers'
-import { RoverItem } from '@/typing/Rover'
+import { Item } from '@/typing/Common'
 import { ROVERS_LIST } from '@/utils/constants'
 
-const initialState = { list: ROVERS_LIST } as { list: RoverItem[] }
+const initialState = { list: ROVERS_LIST } as { list: Item[] }
 
 export default createReducer(initialState, (builder) => {
   builder

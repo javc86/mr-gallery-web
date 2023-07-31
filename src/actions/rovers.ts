@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { RoverItem } from '@/typing/Rover'
+import { Item } from '@/typing/Common'
 
-export const getRovers = createAction<RoverItem[]>('rovers/list')
+export const getRovers = createAction<Item[]>('rovers/list')
