@@ -1,31 +1,27 @@
 import React from 'react'
 
-const useLoadMore = (page: number) => {
-  const [newPage, setNewPage] = React.useState(page)
-  const observerTarget = React.useRef<HTMLInputElement>(null)
+import { useAppSelector } from '@/hooks'
 
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(
+const useLoadMore = (stateName: 'photos' = 'photos') => {
+  const [page, setPage] = React.useState(1)
+  const observer = React.useRef<IntersectionObserver | null>(null)
+  const isLoading = useAppSelector((state) => state[stateName].isLoading)
+
+  const lastItemRef = React.useCallback((node: HTMLInputElement | null) => {
+    if (!node || isLoading) return false
+    if (observer.current) observer.current.disconnect()
+    observer.current = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setNewPage(newPage + 1)
+          setPage(page + 1)
         }
       },
-      { threshold: 1 },
     )
+    observer.current.observe(node)
+    return true
+  }, [isLoading])
 
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current)
-    }
-
-    return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current)
-      }
-    }
-  }, [observerTarget])
-
-  return { newPage, observerTarget }
+  return { page, lastItemRef, observer }
 }
 
 export default useLoadMore

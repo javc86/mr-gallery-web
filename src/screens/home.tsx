@@ -6,6 +6,7 @@ import { fetchPhotos } from '@/actions/photos'
 import { CardRippleEffect, SimpleLoader, Tabs } from '@/components'
 import { useAppDispatch, useAppSelector, useLoadMore } from '@/hooks'
 import { Item } from '@/typing/Common'
+import { Photo } from '@/typing/Photo'
 
 const Home = () => {
   const dispatch = useAppDispatch()
@@ -13,17 +14,32 @@ const Home = () => {
   const photos = useAppSelector((state) => state.photos.list)
   const isLoading = useAppSelector((state) => state.photos.isLoading)
   const [selectedRover, setSelectedRover] = React.useState(rovers[0].value)
-  const [page, setPage] = React.useState(1)
-  const { newPage, observerTarget } = useLoadMore(1)
-  console.log('newPage', newPage)
+  const [newPhotos, setNewPhotos] = React.useState<Photo[]>([])
+  const [newRover, setNewRover] = React.useState('')
+  const { page, lastItemRef, observer } = useLoadMore()
   const [selectedEarthDate, setSelectedEarthDate] = React.useState(moment().add('-1', 'days').format('YYYY-MM-DD'))
 
   React.useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && photos.length > 0) {
+      setNewPhotos([...newPhotos, ...photos])
+    } else if (page > 1 && photos.length === 0) {
+      observer.current?.disconnect()
+    }
+  }, [isLoading, photos])
+
+  React.useEffect(() => {
+    if (!isLoading && !!newRover) {
       dispatch(fetchPhotos({
         rover: selectedRover,
         filters: `page=${page}&earth_date=${selectedEarthDate}`,
       }))
+    }
+  }, [newRover, page])
+
+  React.useEffect(() => {
+    setNewRover(selectedRover)
+    if (newPhotos.length > 0) {
+      setNewPhotos([])
     }
   }, [selectedRover])
 
@@ -46,19 +62,21 @@ const Home = () => {
           </div>
         </div>
       </header>
-      {photos.length === 0 && !isLoading && (
+      {newPhotos.length === 0 && !isLoading && (
         <div className="text-center mt-5">
           <h6 className="text-base font-medium leading-tight">No Results</h6>
         </div>
       )}
-      {photos.length > 0 && (
+      {newPhotos.length > 0 && (
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 mt-5 mx-10 lg:mx-20 xl:mx-40 mb-20">
-          {photos.map((photo) => (
-            <CardRippleEffect
-              key={photo.id}
-              title={photo.camera.full_name}
-              img={photo.img_src}
-            />
+          {newPhotos.map((photo, index) => (
+            <div ref={index === newPhotos.length - 1 ? lastItemRef : undefined} key={photo.id}>
+              <CardRippleEffect
+                key={photo.id}
+                title={photo.camera.full_name}
+                img={photo.img_src}
+              />
+            </div>
           ))}
         </div>
       )}
@@ -66,9 +84,6 @@ const Home = () => {
         <div className="text-center mt-5">
           <SimpleLoader />
         </div>
-      )}
-      {photos.length > 0 && !isLoading && (
-        <div ref={observerTarget} />
       )}
     </div>
   )
