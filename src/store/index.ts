@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import thunkMiddleware from 'redux-thunk'
 
+import errorsMiddleware from '@/middlewares/errors'
 import reducer from '@/reducers'
 
 const store = configureStore({
   reducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
     thunkMiddleware,
+    errorsMiddleware,
   ),
 })
 

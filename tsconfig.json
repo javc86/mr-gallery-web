@@ -2,7 +2,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "jsx": "react",
-    "module": "esnext",
+    "module": "NodeNext",
     "moduleResolution": "node",
     "lib": [
       "dom",
@@ -13,12 +13,15 @@
     "target": "esnext",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": ["./node_modules/@types"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src/*"],
   "exclude": [
     "node_modules",
-    "jest.config.js",
     "**/*.test.tsx"
   ],
   "ts-node": {

@@ -30,5 +30,9 @@ export type Photo = {
 
 export type PhotoOptions = {
   rover: string
-  filter: string
+  filters: string
+}
+
+export type Response = {
+  photos: Photo[]
 }

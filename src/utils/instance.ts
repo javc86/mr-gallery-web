@@ -3,8 +3,6 @@ import axios, {
   AxiosResponse,
 } from 'axios'
 
-import handlerError from './handlerError'
-
 const timeout = 35 * 1 * 1000
 let timerSignal: NodeJS.Timeout
 
@@ -19,8 +17,6 @@ const instanceFetch = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL_API,
 })
 
-instanceFetch.interceptors.response.use((res) => res, handlerError)
-
 export const getHeaders = async () => {
   const headers = {
     Accept: 'application/json',
@@ -32,7 +28,7 @@ export const getHeaders = async () => {
 
 export async function apiFetch<T>(options: AxiosRequestConfig): Promise<AxiosResponse<T>> {
   const headers = await getHeaders()
-  return new Promise((resolve) => {
+  return new Promise((resolve, rejected) => {
     instanceFetch({
       ...options,
       headers,
@@ -42,6 +38,8 @@ export async function apiFetch<T>(options: AxiosRequestConfig): Promise<AxiosRes
         clearTimeout(timerSignal)
       }
       resolve(response)
+    }).catch((error) => {
+      rejected(error)
     }).finally(() => {
       if (timerSignal) {
         clearTimeout(timerSignal)

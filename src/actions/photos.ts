@@ -1,17 +1,21 @@
-import { createAction } from '@reduxjs/toolkit'
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import { AxiosError } from 'axios'
 
-import photosMock from '@/__mocks__/photos.ts'
-import { AppDispatch } from '@/redux/store'
-import { Photo, PhotoOptions } from '@/typing/Photo'
+// import photosMock from '@/__mocks__/photos'
+import { PhotoOptions, Response } from '@/typing/Photo'
 import { apiFetch } from '@/utils/instance'
 
-export const getPhotos = createAction<Photo[] | []>('photos/list')
-
-export const fetchPhotos = ({ rover, filters }: PhotoOptions) => async (dispatch: AppDispatch) => {
-  // const response = await apiFetch<Photo[]>({
-  //   url: `/rovers/${rover}/photos?api_key=${process.env.REACT_APP_API_KEY}&${filters}`,
-  //   method: 'GET',
-  // })
-  // dispatch(getPhotos(response.data.photos))
-  dispatch(getPhotos(photosMock.photos))
-}
+export const fetchPhotos = createAsyncThunk(
+  'photos/fetchPhotos',
+  async ({ rover, filters }: PhotoOptions, { rejectWithValue }) => {
+    try {
+      const response = await apiFetch<Response>({
+        url: `/rovers/${rover}/photos?api_key=${process.env.REACT_APP_API_KEY}&${filters}`,
+        method: 'GET',
+      })
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error instanceof AxiosError ? error.response?.data.error.message : error)
+    }
+  },
+)
