@@ -21,7 +21,12 @@ const useLoadMore = (stateName: 'photos' = 'photos') => {
     return true
   }, [isLoading])
 
-  return { page, lastItemRef, observer }
+  return {
+    page,
+    lastItemRef,
+    observer,
+    setPage,
+  }
 }
 
 export default useLoadMore
