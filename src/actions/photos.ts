@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
-// import photosMock from '@/__mocks__/photos'
 import { PhotoOptions, Response } from '@/typing/Photo'
 import { apiFetch } from '@/utils/instance'
 

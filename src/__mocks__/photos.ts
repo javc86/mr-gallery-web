@@ -109,9 +109,9 @@ export default {
       sol: 3903,
       camera: {
         id: 23,
-        name: 'CHEMCAM',
+        name: 'FHAZ',
         rover_id: 5,
-        full_name: 'Chemistry and Camera Complex',
+        full_name: 'Front Hazard Avoidance Camera',
       },
       img_src: 'https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/03903/soas/rdr/ccam/CR0_743977895PRC_F1022686CCAM02902L1.PNG',
       earth_date: '2023-07-30',

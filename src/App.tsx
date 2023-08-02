@@ -5,7 +5,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 
 import Error from '@/providers/Error'
-import Home from '@/screens/Home'
+import Home from '@/screens/home'
 import store from '@/store'
 
 const App = () => (
